@@ -8,8 +8,12 @@ const createSocket = require("./socket/socket");
 // Load environment variables
 require("dotenv").config();
 
-// Middleware
-app.use(cors());
+const corsOptions = {
+  origin: "https://fe-socket-ashy.vercel.app",
+  optionsSuccessStatus: 200, // Untuk beberapa browser lama
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Database connection
