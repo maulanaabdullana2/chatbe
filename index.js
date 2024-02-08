@@ -1,28 +1,36 @@
-const http = require("http");
-const { Server } = require("socket.io");
-const app = require("./app");
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const app = express();
+const router = require("./router");
+const createSocket = require("./socket/socket");
 
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:8080", // TODO: Ganti jadi URL react-mu
-    methods: ["GET", "POST"],
-  },
-});
+// Load environment variables
+require("dotenv").config();
 
-io.on("connection", (socket) => {
-  console.log("INFO:", "seseorang telah bergabung ke chat room!");
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-  socket.on("chat message", (msg) => {
-    console.log("INFO:", "incoming message", JSON.stringify(msg));
-    io.emit("incoming message", msg);
+// Database connection
+const database = process.env.DATABASE_URL;
+mongoose
+  .connect(database, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Database Berhasil Terkoneksi");
+  })
+  .catch((error) => {
+    console.error("Database connection error:", error);
   });
 
-  socket.on("disconnect", () => {
-    console.log("INFO:", "seseorang telah pergi dari chat room!");
-  });
+// Routes
+app.use(router);
+
+// Server setup
+const port = process.env.PORT || 8000;
+const server = app.listen(port, () => {
+  console.log("INFO:", `Listening on port ${port}`);
 });
 
-server.listen(8000, () => {
-  console.log("INFO:", "Listening on port 8000");
-});
+// WebSocket setup
+createSocket(server);
