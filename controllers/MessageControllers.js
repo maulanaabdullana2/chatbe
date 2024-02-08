@@ -2,6 +2,7 @@ const Message = require('../models/MessagesModels');
 const getmessage = async (req,res) =>{
     try {
         const message = await Message.find()
+        res.header("Access-Control-Allow-Origin", "*");
         res.status(200).json({
             status:"suksess",
             message:"get data message successfully",

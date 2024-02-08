@@ -3,13 +3,7 @@ const cors = require("cors");
 const morgan = require('morgan')
 const app = express();
 
-
-const corsOptions = {
-  origin: "https://fe-socket-ashy.vercel.app",
-  optionsSuccessStatus: 200, // Untuk beberapa browser lama
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(morgan('dev'))
 

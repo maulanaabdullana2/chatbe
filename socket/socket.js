@@ -2,12 +2,13 @@ const { Server } = require("socket.io");
 const Message = require("../models/MessagesModels");
 require("dotenv").config();
 
-
 module.exports = function (server) {
   const io = new Server(server, {
     cors: {
-      origin: `${process.env.ORIGIN_URL}`, //fe url
+      origin: "http://localhost:5173", // Ganti dengan URL aplikasi frontend Anda
       methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
     },
   });
 
