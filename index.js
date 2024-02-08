@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const app = express();
 const router = require("./router");
 const createSocket = require("./socket/socket");
@@ -9,7 +8,6 @@ const createSocket = require("./socket/socket");
 require("dotenv").config();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Database connection
