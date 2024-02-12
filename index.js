@@ -4,6 +4,7 @@ const Message = require("./models/MessagesModels");
 const { Server } = require("socket.io");
 const app = require("./app");
 const ImageKit = require("imagekit");
+const PORT = process.env.PORT || 8000
 require("dotenv").config();
 
 const imagekit = new ImageKit({
@@ -75,6 +76,6 @@ io.on("connection",(socket) => {
   });
 });
 
-server.listen(8000, () => {
+server.listen(PORT, () => {
   console.log("INFO:", "Listening on port 8000");
 });
