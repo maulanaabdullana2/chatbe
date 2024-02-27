@@ -3,15 +3,8 @@ const mongoose = require("mongoose");
 const Message = require("./models/MessagesModels");
 const { Server } = require("socket.io");
 const app = require("./app");
-const ImageKit = require("imagekit");
 const PORT = process.env.PORT || 8000
 require("dotenv").config();
-
-const imagekit = new ImageKit({
-  publicKey: "public_sXioiHdzKT21e05ecvacMrvDi20=",
-  privateKey: "private_SJcwW7aeSvVhB9i83a261IYbAdA=",
-  urlEndpoint: "https://ik.imagekit.io/rkdjvchqti",
-});
 
 const database = process.env.DATABASE_URL;
 mongoose
@@ -26,7 +19,7 @@ mongoose
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: `${"https://chatfe.vercel.app"}`,
+    origin: `${"http://localhost:5173"}`,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -40,18 +33,9 @@ io.on("connection",(socket) => {
     console.log("INFO:", "incoming message", JSON.stringify(msg));
 
     try {
-      if (msg.image) {
-        const uploadResponse = await imagekit.upload({
-          file: msg.image, 
-          fileName: "chat_image_" + Date.now(),
-        });
-        msg.image = uploadResponse.url;
-      }
-
       await Message.create({
         username: msg.username,
         message: msg.message,
-        image: msg.image || null, 
       });
 
       msg.status = "sent";
