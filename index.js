@@ -19,7 +19,7 @@ mongoose
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: `${"https://chatfe.vercel.app/"}`,
+    origin: process.env.FE_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
