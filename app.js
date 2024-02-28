@@ -1,15 +1,20 @@
 const express = require("express");
 const cors = require("cors");
-const morgan = require('morgan');
-const ImageKit = require('imagekit')
-const multer = require('multer')
-const message = require('./models/MessagesModels')
+const morgan = require("morgan");
+const ImageKit = require("imagekit");
+const multer = require("multer");
+const message = require("./models/MessagesModels");
 const ApiError = require("./utils/ApiError");
 const app = express();
+require("dotenv").config();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: `${process.env.FE_URL}`,
+  }),
+);
 
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 
 const imagekit = new ImageKit({
   publicKey: "public_sXioiHdzKT21e05ecvacMrvDi20=",
@@ -44,9 +49,9 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     });
 
     const messages = await message.create({
-      image:result.url
-    }) 
-    res.json(messages)
+      image: result.url,
+    });
+    res.json(messages);
   } catch (err) {
     console.error("Error uploading image:", err);
     res.status(err.statusCode || 500).json({ error: err.message });
@@ -59,7 +64,5 @@ app.get("/", (req, res) => {
     message: "Hello World",
   });
 });
-
-
 
 module.exports = app;
