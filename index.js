@@ -26,6 +26,7 @@ const io = new Server(server, {
   },
 });
 
+
 io.on("connection", (socket) => {
   console.log("INFO:", "Seseorang telah bergabung ke chat room!");
 
