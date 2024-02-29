@@ -61,6 +61,7 @@ io.on("connection", (socket) => {
       console.error("Kesalahan mendapatkan pesan dari database:", err);
     }
   });
+
   socket.on("disconnect", () => {
     console.log("INFO:", "Seseorang telah pergi dari chat room!");
   });
