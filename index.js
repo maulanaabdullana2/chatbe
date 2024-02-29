@@ -14,7 +14,6 @@ mongoose
   })
   .catch((error) => {
     console.error("Kesalahan koneksi database:", error);
-    process.exit(1); 
   });
 
 const server = http.createServer(app);
